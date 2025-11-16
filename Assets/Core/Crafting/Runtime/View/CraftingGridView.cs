@@ -64,6 +64,11 @@ namespace Core.Crafting.Runtime.View
         
         private void OnSplitSlotDragStart(int index)
         {
+            if (index == _allSlots.Count - 1)
+            {
+                return;
+            }
+            
             SplitSlotDragStarted?.Invoke(_containerKey, index);
         }
 

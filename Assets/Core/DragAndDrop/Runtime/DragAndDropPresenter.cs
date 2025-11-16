@@ -64,7 +64,7 @@ namespace Core.DragAndDrop.Runtime
             Result<IItemSlot> sourceSlot = container.GetSlot(slotIndex);
             _itemDragState.TakenFromNonAcceptingSlot = sourceSlot.Exists && !sourceSlot.Object.CanAcceptItems;
             int quantity = Mathf.Max(sourceSlot.Object.OccupyingItem.Object.Quantity / 2, 1);
-            
+
             if (!container.TryTakeItem(slotIndex, quantity, out Item takenItem))
             {
                 return;
@@ -85,6 +85,11 @@ namespace Core.DragAndDrop.Runtime
                 return;
             }
 
+            if (!_containerResolver.TryResolve(_itemDragState.SourceContainerKey, out ISlotContainer sourceContainer))
+            {
+                return;
+            }
+ 
             if (_itemDragState.TakenFromNonAcceptingSlot)
             {
                 Result<IItemSlot> targetSlot = container.GetSlot(slotIndex);
@@ -92,57 +97,65 @@ namespace Core.DragAndDrop.Runtime
                 {
                     if (targetSlot.Object.IsOccupied)
                     {
-                        OnDroppedItemNonSwappable(container, slotIndex);
+                        OnDroppedItemNonSwappable(container, sourceContainer, slotIndex);
                         return;
                     }
-                    
+
                     if (!targetSlot.Object.CanAcceptItems)
                     {
-                        OnDroppedItemSwappable(container, slotIndex, true);
+                        OnDroppedItemSwappable(container, sourceContainer, slotIndex, true);
                         return;
                     }
                 }
             }
 
-            OnDroppedItemSwappable(container, slotIndex, false);
+            OnDroppedItemSwappable(container, sourceContainer, slotIndex, false);
         }
 
-        private void OnDroppedItemSwappable(ISlotContainer container, int slotIndex, bool forcePutBack)
+        private void OnDroppedItemSwappable(
+            ISlotContainer container, 
+            ISlotContainer sourceContainer, 
+            int slotIndex, 
+            bool forcePutBack)
         {
             Item heldItem = _itemDragState.HeldItem.Object;
+            IItemSlot sourceSlot = sourceContainer.GetSlot(_itemDragState.SourceSlotIndex).Object;
+            IItemSlot targetSlot = container.GetSlot(slotIndex).Object;
+            bool bothOccupied = targetSlot.IsOccupied && sourceSlot.IsOccupied;
+            
+            if (bothOccupied && 
+                !targetSlot.OccupyingItem.Object.Definition.Key.Equals(sourceSlot.OccupyingItem.Object.Definition.Key))
+            {
+                PutItemBackToDragSource(heldItem, sourceContainer, forcePutBack);
+                return;
+            }
+            
             bool noSwap = container.TryAddItem(slotIndex, heldItem, out Item swappedItem);
 
             if (!noSwap)
             {
-                PutItemBackToDragSource(swappedItem, forcePutBack);
+                PutItemBackToDragSource(swappedItem, sourceContainer, forcePutBack);
             }
             _itemDragState.Clear();
         }
 
-        private void OnDroppedItemNonSwappable(ISlotContainer container, int slotIndex)
+        private void OnDroppedItemNonSwappable(ISlotContainer container, ISlotContainer sourceContainer, int slotIndex)
         {
             IItemSlot targetSlot = container.GetSlot(slotIndex).Object;
             string itemKey = targetSlot.OccupyingItem.Object.Definition.Key;
 
             if (itemKey.Equals(_itemDragState.HeldItem.Object.Definition.Key))
             {
-                OnDroppedItemSwappable(container, slotIndex, true);
+                OnDroppedItemSwappable(container, sourceContainer, slotIndex, true);
                 return;
             }
 
-            PutItemBackToDragSource(_itemDragState.HeldItem.Object, true);
+            PutItemBackToDragSource(_itemDragState.HeldItem.Object, sourceContainer, true);
         }
 
-        private void PutItemBackToDragSource(Item item, bool forcePutBack = false)
+        private void PutItemBackToDragSource(Item item, ISlotContainer sourceContainer, bool forcePutBack = false)
         {
-            string sourceContainerKey = _itemDragState.SourceContainerKey;
             int sourceSlotIndex = _itemDragState.SourceSlotIndex;
-
-            if (!_containerResolver.TryResolve(sourceContainerKey, out ISlotContainer sourceContainer))
-            {
-                Debug.LogError($"Couldn't find source container at index {sourceContainerKey}");
-                return;
-            }
 
             bool placedBackFully = sourceContainer.TryAddItem(sourceSlotIndex, item, out Item _, forcePutBack);
             if (!placedBackFully)

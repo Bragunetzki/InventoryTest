@@ -5879,6 +5879,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TooltipView
       objectReference: {fileID: 0}
+    - target: {fileID: 7759165948190261160, guid: df9787c45f5667f48910de663febb1ae, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
