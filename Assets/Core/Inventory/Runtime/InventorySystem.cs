@@ -1,58 +1,73 @@
+using System;
 using Core.AssetLoader;
+using Core.ContainerResolver;
 using Core.Inventory.Runtime.Config;
-using Core.Inventory.Runtime.Presenter;
 using Core.Inventory.Runtime.View;
 using Core.Items.Runtime;
 using Core.Utils;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using VContainer;
 using VContainer.Unity;
 
 namespace Core.Inventory.Runtime
 {
-    public class InventorySystem : IInitializable
+    public class InventorySystem : IInitializable, IDisposable, ISlotContainerProvider
     {
         private const string CONFIG_ADDRESS = "InventoryConfig";
-        
+        private const string INVENTORY_CONTAINER_KEY = "InventoryContainer";
+
         private readonly IInventoryView _view;
         private readonly SimpleAssetLoader _assetLoader;
-        private readonly IDraggedItemView _draggedItemView;
         private readonly ItemFactory _itemFactory;
-
-        private InventoryPresenter _presenter;
-        private Inventory _inventory;
-        private InventoryGenerator _inventoryGenerator;
+        private readonly InputAction _splitAction;
+        private readonly InventoryPresenter _presenter;
+        private readonly Inventory _inventory;
 
         [Inject]
         public InventorySystem(
             SimpleAssetLoader assetLoader,
+            InputSystem_Actions input,
             IInventoryView view,
-            IDraggedItemView draggedItemView,
             ItemFactory itemFactory)
         {
             _assetLoader = assetLoader;
+            _splitAction = input.Player.Split;
             _view = view;
-            _draggedItemView = draggedItemView;
             _itemFactory = itemFactory;
-        }
-
-
-        public void Initialize()
-        {
+            
             Result<InventoryConfig> configResult = _assetLoader.LoadAssetSync<InventoryConfig>(CONFIG_ADDRESS);
             if (!configResult.Exists)
             {
                 Debug.LogError($"Can't find inventory config at address: {CONFIG_ADDRESS}");
                 return;
             }
-            
-            _inventory = new Inventory(configResult.Object);
-            _presenter = new InventoryPresenter(_inventory, _view, _draggedItemView);
-            _inventoryGenerator = new InventoryGenerator(configResult.Object.ItemsKeysToGenerate, _itemFactory);
-            
-            _view.Init(configResult.Object);
+
+            InventoryConfig config = configResult.Object;
+            _inventory = new Inventory(INVENTORY_CONTAINER_KEY, config);
+            var generator = new InventoryGenerator(config.ItemsKeysToGenerate, _itemFactory);
+            _presenter = new InventoryPresenter(
+            INVENTORY_CONTAINER_KEY,
+            _splitAction,
+            _inventory,
+            _view,
+            config,
+            generator);
+        }
+
+        public void Initialize()
+        {
             _presenter.Init();
-            _inventoryGenerator.FillSlots(_inventory);
+        }
+
+        public ISlotContainer GetSlotContainer()
+        {
+            return _inventory;
+        }
+
+        public void Dispose()
+        {
+            _presenter?.Dispose();
         }
     }
 }

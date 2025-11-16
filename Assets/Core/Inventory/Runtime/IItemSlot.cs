@@ -7,5 +7,6 @@ namespace Core.Inventory.Runtime
     {
         bool IsOccupied { get; }
         Result<Item> OccupyingItem { get; }
+        bool CanAcceptItems { get; }
     }
 }

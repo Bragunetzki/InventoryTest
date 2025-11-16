@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Core.Inventory.Runtime.View
+namespace Core.DragAndDrop.Runtime.View
 {
     public interface IDraggedItemView
     {

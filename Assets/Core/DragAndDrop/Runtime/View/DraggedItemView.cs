@@ -1,9 +1,9 @@
-using System;
+using Core.Inventory.Runtime.View;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Core.Inventory.Runtime.View
+namespace Core.DragAndDrop.Runtime.View
 {
     public class DraggedItemView : MonoBehaviour, IDraggedItemView
     {

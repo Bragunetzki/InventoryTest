@@ -17,6 +17,14 @@ namespace Core.Inventory.Runtime
             _itemsKeysToGenerate = itemsKeysToGenerate;
             _itemFactory = itemFactory;
         }
+
+        public void ClearSlots(Inventory inventory)
+        {
+            for (int index = 0; index < inventory.Capacity; index++)
+            {
+                inventory.ForceSetItem(index, default);
+            }
+        }
         
         public void FillSlots(Inventory inventory)
         {
@@ -29,12 +37,8 @@ namespace Core.Inventory.Runtime
                 }
 
                 Result<Item> itemResult = CreateRandomItem();
-                if (!itemResult.Exists)
-                {
-                    continue;
-                }
 
-                inventory.TryAddItem(index, itemResult.Object, out _);
+                inventory.ForceSetItem(index, itemResult.Object);
             }
         }
 

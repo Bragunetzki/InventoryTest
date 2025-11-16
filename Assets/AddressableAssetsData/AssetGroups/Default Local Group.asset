@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0570c7570d02c6e478adb402a1b7a2f8
+    m_Address: RecipesConfig
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5bee80709d34add48822a0291a29edba
     m_Address: ItemConfig/Wood
     m_ReadOnly: 0
