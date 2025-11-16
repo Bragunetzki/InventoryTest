@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e905e42befea42e6a1cf00e9403a6323, type: 3}
+  m_Name: RecipesConfig
+  m_EditorClassIdentifier: Assembly-CSharp::Core.Crafting.Runtime.Recipes.Config.RecipesConfig
+  _recipes:
+  - _resultItemKey: Axe
+    _resultQuantity: 1
+    _row1:
+    - Wood
+    - Wood
+    _row2:
+    - Wood
+    - Stick
+    _row3:
+    - 
+    - Stick
+  - _resultItemKey: Pickaxe
+    _resultQuantity: 1
+    _row1:
+    - Stone
+    - Stone
+    - Stone
+    _row2:
+    - 
+    - Stick
+    - 
+    _row3:
+    - 
+    - Stick
+    - 
+  - _resultItemKey: Hammer
+    _resultQuantity: 1
+    _row1:
+    - Iron
+    - Iron
+    _row2:
+    - Iron
+    - Iron
+    _row3:
+    - 
+    - Stick
+  - _resultItemKey: Stick
+    _resultQuantity: 4
+    _row1:
+    - Wood
+    _row2:
+    - Wood
+    _row3: []

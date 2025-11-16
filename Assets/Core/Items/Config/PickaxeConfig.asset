@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PickaxeConfig
   m_EditorClassIdentifier: Assembly-CSharp::Core.Items.Runtime.ItemConfig
   _icon: {fileID: 21300000, guid: 8072ac7acf019fb4ca7fdadb44f03d22, type: 3}
-  _itemName: Pickaxe
+  _itemKey: Pickaxe
   _stackSize: 1

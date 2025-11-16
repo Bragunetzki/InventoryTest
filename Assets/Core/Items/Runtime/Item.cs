@@ -1,3 +1,4 @@
+using Core.Items.Runtime.Definition;
 using Unity.Mathematics.Geometry;
 using UnityEngine;
 
@@ -26,6 +27,7 @@ namespace Core.Items.Runtime
             addedQuantity = Mathf.Clamp(quantity, 0, Definition.StackSize - _quantity);
             Quantity += addedQuantity;
         }
+        
         public void RemoveQuantity(int quantity, out int removedQuantity)
         {
             removedQuantity = Mathf.Clamp(quantity, 0, _quantity);

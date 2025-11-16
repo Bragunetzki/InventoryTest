@@ -29,7 +29,27 @@ namespace Core.Scope
 
         private void RegisterInventorySystem(IContainerBuilder builder)
         {
-            builder.Register<InventorySystem>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.Register<SlotContainerResolver>(Lifetime.Singleton);
+            builder.Register<InventorySystem>(Lifetime.Singleton)
+                .AsSelf()
+                .AsImplementedInterfaces();
+        }
+
+        private void RegisterCraftingSystem(IContainerBuilder builder)
+        {
+            builder.Register<ScriptableObjectRecipeConfigLoader>(Lifetime.Singleton)
+                .As<IRecipeConfigLoader>();
+            
+            builder.Register<CraftingSystem>(Lifetime.Singleton)
+                .AsSelf()
+                .AsImplementedInterfaces();
+        }
+
+        private void RegisterDragAndDropSystem(IContainerBuilder builder)
+        {
+            builder.Register<DragAndDropSystem>(Lifetime.Singleton)
+                .AsSelf()
+                .AsImplementedInterfaces();
         }
 
         private void RegisterViews(IContainerBuilder builder)

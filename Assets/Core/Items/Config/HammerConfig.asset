@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: HammerConfig
   m_EditorClassIdentifier: Assembly-CSharp::Core.Items.Runtime.ItemConfig
   _icon: {fileID: 21300000, guid: 894a78e1442822a4ca80b6e6d2fea1ee, type: 3}
-  _itemName: Hammer
+  _itemKey: Hammer
   _stackSize: 1

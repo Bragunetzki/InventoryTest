@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: WoodConfig
   m_EditorClassIdentifier: Assembly-CSharp::Core.Items.Runtime.ItemConfig
   _icon: {fileID: 21300000, guid: 6cf3f69c6b9961a43a509df246dfb3be, type: 3}
-  _itemName: Wood
+  _itemKey: Wood
   _stackSize: 99

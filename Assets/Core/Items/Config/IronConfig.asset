@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: IronConfig
   m_EditorClassIdentifier: Assembly-CSharp::Core.Items.Runtime.ItemConfig
   _icon: {fileID: 21300000, guid: 6f07133440bd25e4abbffdb50a2596df, type: 3}
-  _itemName: Iron
+  _itemKey: Iron
   _stackSize: 99

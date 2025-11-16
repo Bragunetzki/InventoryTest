@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: StoneConfig
   m_EditorClassIdentifier: Assembly-CSharp::Core.Items.Runtime.ItemConfig
   _icon: {fileID: 21300000, guid: e7e2b8ca80a4501479de62b0fc510aa9, type: 3}
-  _itemName: Stone
+  _itemKey: Stone
   _stackSize: 99
